@@ -22,4 +22,4 @@ Essentially, the program represents VLIs as strings, it reads them from the text
 
 The ```addVLIs(VLI1, VLI2)``` function takes two VLI's an input and uses an implementation of an algorithm used by primary school children to sum two numbers together. It starts from the right-most digit of the two numbers, adds them together, keeps track of whether the result carries or not, and repeats until the digits of one of the numbers is exhausted. It then continues adding 0 to the remaining digits of the remaining number (keeping track of carrying) until it has its answer.
 
-![The summing algorithm](https://www.google.com/url?sa=i&url=http%3A%2F%2Fmath.biola.edu%2Fmath120%2Fhhv%2Fch10_videos.html&psig=AOvVaw0wIVd0vte1rC-kd3vQ25Qq&ust=1670416737875000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCJDixbSB5fsCFQAAAAAdAAAAABAG "Algorithm")
+![The summing algorithm](http://math.biola.edu/math120/hhv/images/previewC1.png "Algorithm")
