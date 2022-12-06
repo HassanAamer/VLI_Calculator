@@ -16,12 +16,8 @@ _OBJ = vliaddition.o vli_source.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.c $(DEPS)
+	@mkdir -p $(ODIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(OUTDIR)/VLIProgram: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
-
-.PHONY: clean
-
-clean:
-	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~
