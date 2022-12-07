@@ -16,10 +16,8 @@ The calculator program takes as input two text files as command-line arguments c
 
 ## What's happening under the hood?
 
-Most of the implementation is in ```vliaddition.c``` , inside the ```src``` folder. ```vli_source.c``` contains the main function and drives the program. There are two major functions inside ```vliaddition.c``` and a couple of helper functions.
+Functionality for reading and representation of VLI's as strings is contained within the ```vli_reader.c``` file. The ```readVLI(filepath)``` reads and stores the VLI from the provided text filepath along with the sign (+/-).
 
-Essentially, the program represents VLIs as strings, it reads them from the text file passed as input to tthe program and dynamically resizes the string that stores each VLI. The user does not have to worry about the size of the VLI, there is no hard limit. This is accomplished in the ```readVLIasChar(filepath)``` function, where ```filepath``` is the path of the text-file containing the VLI. The function returns a string representation of the VLI
-
-The ```addVLIs(VLI1, VLI2)``` function takes two VLI's an input and uses an implementation of an algorithm used by primary school children to sum two numbers together. It starts from the right-most digit of the two numbers, adds them together, keeps track of whether the result carries or not, and repeats until the digits of one of the numbers is exhausted. It then continues adding 0 to the remaining digits of the remaining number (keeping track of carrying) until it has its answer.
+Functionality for addition is provided within the ```vli_addition.c``` file. The ```addVLIs(VLI1, VLI2)``` function takes two VLI's as input and uses the equivalent of a primary school addition algorithm for summing two numbers. As shown in the image below:
 
 ![The summing algorithm](http://math.biola.edu/math120/hhv/images/previewC1.png "Algorithm")

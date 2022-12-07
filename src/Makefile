@@ -9,15 +9,15 @@ LDIR=../lib
 
 LIBS=-lm
 
-_DEPS = vliaddition.h
+_DEPS = vli_addition.h vli_reader.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = vliaddition.o vli_source.o 
+_OBJ = vli_addition.o vli_calculator.o vli_reader.o 
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(ODIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(OUTDIR)/VLIProgram: $(OBJ)
+$(OUTDIR)/VLIcalculator: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
