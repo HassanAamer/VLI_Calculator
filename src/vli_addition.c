@@ -4,18 +4,39 @@
 #include "vli_reader.h"
 
 #define ASCII_OFFSET 48
+#define NO_CARRY 0
+#define BASE_10 10
+#define CARRY 1
+#define NEGATIVE 1
+#define POSITIVE 0
 
-vli_t *addVLIs(vli_t *VLI1, vli_t *VLI2);
+vli_t *addSignedVLIs(vli_t *VLI1, vli_t *VLI2);
+vli_t *addUnsignedVLIs(vli_t *VLI1, vli_t *VLI2);
 char convertIntToASCII(int i);
 int convertASCIIToInt(char c);
 
-vli_t *addVLIs(vli_t *VLI1, vli_t *VLI2)
+vli_t *addSignedVLIs(vli_t *VLI1, vli_t *VLI2)
+{
+    vli_t *sum = NULL;
+    if (VLI1->isNegative && VLI2->isNegative)
+    {
+        sum = addUnsignedVLIs(VLI1, VLI2);
+        sum->isNegative = NEGATIVE;
+    }
+    if (!(VLI1->isNegative || VLI2->isNegative))
+    {
+        sum = addUnsignedVLIs(VLI1, VLI2);
+        sum->isNegative = POSITIVE;
+    }
+}
+
+vli_t *addUnsignedVLIs(vli_t *VLI1, vli_t *VLI2)
 {
     vli_t *sum = NULL;
     size_t VLI1_length = strlen(VLI1->VLI_value);
     size_t VLI2_length = strlen(VLI2->VLI_value);
 
-    int carry_flag = 0;
+    int carry_flag = NO_CARRY;
     int temp_sum;
 
     vli_t *smaller_length_VLI;
@@ -47,45 +68,32 @@ vli_t *addVLIs(vli_t *VLI1, vli_t *VLI2)
     int i;
     int second_term;
     int first_term;
-    int polarity = (VLI1->isNegative == VLI2->isNegative) ? 1 : -1;
 
     for (i = 0; i < bigger_length; i++)
     {
         first_term = convertASCIIToInt(bigger_length_VLI->VLI_value[i]);
         second_term = (i >= smaller_length) ? 0 : convertASCIIToInt(smaller_length_VLI->VLI_value[i]);
 
-        if (polarity == -1)
-        {
-            first_term = (bigger_length_VLI->isNegative) ? first_term * -1 : first_term;
-            second_term = (smaller_length_VLI->isNegative) ? second_term * -1 : second_term;
-        }
-
         temp_sum = first_term + second_term + carry_flag;
 
-        if (temp_sum >= 10)
+        if (temp_sum >= BASE_10)
         {
-            temp_sum -= 10;
-            carry_flag = 1;
-        }
-        else if (temp_sum > 0 && temp_sum < 10)
-        {
-            carry_flag = 0;
+            temp_sum -= BASE_10;
+            carry_flag = CARRY;
         }
         else
         {
-            temp_sum += 10;
-            carry_flag = -1;
+            carry_flag = NO_CARRY;
         }
 
         sum->VLI_value[i] = convertIntToASCII(temp_sum);
     }
 
-    if (carry_flag != 0)
+    if (carry_flag)
     {
         sum->VLI_value[i] = convertIntToASCII(1);
         i++;
     }
-    sum->isNegative = (carry_flag == -1) ? 1 : 0;
     sum->VLI_value[i] = '\0';
     sum->VLI_value = strrev(sum->VLI_value);
 

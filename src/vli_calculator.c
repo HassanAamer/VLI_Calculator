@@ -26,11 +26,26 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    printf("VLI1 SIGN: %d, VLI2 SIGN: %d\n", VLI1->isNegative, VLI2->isNegative);
-    printf("VLI1: %s\nVLI2: %s\n", VLI1->VLI_value, VLI2->VLI_value);
+    printf("VLI1: ");
+    if (VLI1->isNegative)
+    {
+        printf("-");
+    }
+    printf("%s\n", VLI1->VLI_value);
+    printf("VLI2: ");
+    if (VLI2->isNegative)
+    {
+        printf("-");
+    }
+    printf("%s\n", VLI2->VLI_value);
 
-    vli_t *sum = addVLIs(VLI1, VLI2);
-    printf("Sum: %s\n", sum->VLI_value);
+    vli_t *sum = addSignedVLIs(VLI1, VLI2);
+    printf("Sum: ");
+    if (sum->isNegative)
+    {
+        printf("-");
+    }
+    printf("%s\n", sum->VLI_value);
 
     free(VLI1->VLI_value);
     free(VLI1);

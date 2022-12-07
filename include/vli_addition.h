@@ -3,6 +3,6 @@
 
 #include "vli_reader.h"
 
-vli_t *addVLIs(vli_t *VLI1, vli_t *VLI2);
+vli_t *addSignedVLIs(vli_t *VLI1, vli_t *VLI2);
 
 #endif
