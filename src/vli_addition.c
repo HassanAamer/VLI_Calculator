@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include "vli_reader.h"
 
@@ -23,10 +24,52 @@ vli_t *addSignedVLIs(vli_t *VLI1, vli_t *VLI2)
         sum = addUnsignedVLIs(VLI1, VLI2);
         sum->isNegative = NEGATIVE;
     }
-    if (!(VLI1->isNegative || VLI2->isNegative))
+    else if (!VLI1->isNegative && !VLI2->isNegative)
     {
         sum = addUnsignedVLIs(VLI1, VLI2);
         sum->isNegative = POSITIVE;
+    }
+    else
+    {
+        if (isGreaterThan(VLI1, VLI2))
+        {
+            sum = subtractVLIs(VLI1, VLI2);
+            sum->isNegative = (VLI1->isNegative) ? NEGATIVE : POSITIVE;
+        }
+        else
+        {
+            sum = subtractVLIs(VLI2, VLI1);
+            sum->isNegative = (VLI2->isNegative) ? NEGATIVE : POSITIVE;
+        }
+    }
+    return sum;
+}
+
+vli_t *subtractVLIs(vli_t *minuend, vli_t *subtractend)
+{
+}
+
+int isGreaterThan(vli_t *VLI1, vli_t *VLI2)
+{
+    size_t VLI1_length = strlen(VLI1->VLI_value);
+    size_t VLI2_length = strlen(VLI2->VLI_value);
+
+    if (VLI1_length > VLI2_length)
+    {
+        return true;
+    }
+    else if (VLI2_length > VLI1_length)
+    {
+        return false;
+    }
+    else
+    {
+        int i = 0;
+        while (VLI1->VLI_value[i] == VLI2->VLI_value[i])
+        {
+            i++;
+        }
+        return (VLI1->VLI_value[i] > VLI2->VLI_value[i]);
     }
 }
 
