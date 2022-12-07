@@ -1,6 +1,8 @@
 #ifndef VLI_ADDITION_H_
 #define VLI_ADDITION_H_
 
-char *addVLIs(char *VLI1, char *VLI2);
+#include "vli_reader.h"
+
+vli_t *addVLIs(vli_t *VLI1, vli_t *VLI2);
 
 #endif

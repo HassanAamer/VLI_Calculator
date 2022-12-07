@@ -13,16 +13,30 @@ int main(int argc, char *argv[])
     char *VLI1_path = argv[1];
     char *VLI2_path = argv[2];
 
-    char *VLI1 = readVLI(VLI1_path);
-    char *VLI2 = readVLI(VLI2_path);
+    vli_t *VLI1 = readVLI(VLI1_path);
+    if (VLI1 == NULL)
+    {
+        printf("VLI1 cannot be empty!");
+        return 1;
+    }
+    vli_t *VLI2 = readVLI(VLI2_path);
+    if (VLI2 == NULL)
+    {
+        printf("VLI2 cannot be empty!");
+        return 1;
+    }
 
-    printf("VLI1: %s\nVLI2: %s\n", VLI1, VLI2);
+    printf("VLI1 SIGN: %d, VLI2 SIGN: %d\n", VLI1->isNegative, VLI2->isNegative);
+    printf("VLI1: %s\nVLI2: %s\n", VLI1->VLI_value, VLI2->VLI_value);
 
-    char *sum = addVLIs(VLI1, VLI2);
-    printf("Sum: %s\n", sum);
+    vli_t *sum = addVLIs(VLI1, VLI2);
+    printf("Sum: %s\n", sum->VLI_value);
 
+    free(VLI1->VLI_value);
     free(VLI1);
+    free(VLI2->VLI_value);
     free(VLI2);
+    free(sum->VLI_value);
     free(sum);
     return 0;
 }
