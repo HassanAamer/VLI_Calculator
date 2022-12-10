@@ -8,15 +8,11 @@
 #define NO_CARRY 0
 #define BASE_10 10
 #define CARRY 1
-#define NEGATIVE 1
-#define POSITIVE 0
 
 vli_t *addSignedVLIs(vli_t *VLI1, vli_t *VLI2);
 vli_t *addUnsignedVLIs(vli_t *biggerVLI, vli_t *smallerVLI, vli_t *sum);
 vli_t *subtractVLIs(vli_t *minuend, vli_t *subtractend, vli_t *output);
 int isGreaterThan(vli_t *VLI1, vli_t *VLI2);
-char convertIntToASCII(int i);
-int convertASCIIToInt(char c);
 
 /*
     This function takes two signed VLI's as input and returns
@@ -55,7 +51,8 @@ vli_t *addSignedVLIs(vli_t *VLI1, vli_t *VLI2)
         sum = addUnsignedVLIs(bigger_VLI, smaller_VLI, sum);
         sum->isNegative = bigger_VLI->isNegative;
     }
-    return sum;
+
+    return normalizeVLI(sum);
 }
 
 vli_t *subtractVLIs(vli_t *minuend, vli_t *subtractend, vli_t *output)
@@ -182,16 +179,4 @@ int isGreaterThan(vli_t *VLI1, vli_t *VLI2)
         }
         return (VLI1->VLI_value[i] > VLI2->VLI_value[i]);
     }
-}
-
-// These functions assist in the two-sided conversion between ASCII & Integers
-
-int convertASCIIToInt(char c)
-{
-    return c - 48;
-}
-
-char convertIntToASCII(int i)
-{
-    return i + 48;
 }

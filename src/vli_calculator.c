@@ -29,12 +29,16 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    vli_t *sum = addSignedVLIs(VLI1, VLI2);
+    VLI1 = normalizeVLI(VLI1);
+    VLI2 = normalizeVLI(VLI2);
 
     printf("VLI1: ");
     printVLI(VLI1);
     printf("VLI2: ");
     printVLI(VLI2);
+
+    vli_t *sum = addSignedVLIs(VLI1, VLI2);
+
     printf("Sum: ");
     printVLI(sum);
 

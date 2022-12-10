@@ -5,6 +5,9 @@
 
 #define CHUNK 200
 
+char convertIntToASCII(int i);
+int convertASCIIToInt(char c);
+
 vli_t *readVLI(char *Path)
 {
     FILE *f = fopen(Path, "r");
@@ -42,5 +45,38 @@ vli_t *readVLI(char *Path)
 
 vli_t *normalizeVLI(vli_t *VLI)
 {
-    return NULL;
+    size_t length = strlen(VLI->VLI_value);
+    char *reversedValue;
+
+    int i = 0;
+    while ((convertASCIIToInt(VLI->VLI_value[i]) == 0))
+    {
+        i++;
+    }
+
+    if (i == length)
+    {
+        VLI->isNegative = POSITIVE;
+        VLI->VLI_value[0] = '0';
+        VLI->VLI_value[1] = '\0';
+        return VLI;
+    }
+
+    reversedValue = strrev(VLI->VLI_value);
+    reversedValue[length - i] = '\0';
+    VLI->VLI_value = strrev(reversedValue);
+
+    return VLI;
+}
+
+// These functions assist in the two-sided conversion between ASCII & Integers
+
+int convertASCIIToInt(char c)
+{
+    return c - 48;
+}
+
+char convertIntToASCII(int i)
+{
+    return i + 48;
 }
