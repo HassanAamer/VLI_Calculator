@@ -9,10 +9,10 @@ LDIR=../lib
 
 LIBS=-lm
 
-_DEPS = vli_addition.h vli_reader.h
+_DEPS = vli_addition.h vli_parser.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = vli_addition.o vli_calculator.o vli_reader.o 
+_OBJ = vli_addition.o vli_calculator.o vli_parser.o 
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.c $(DEPS)

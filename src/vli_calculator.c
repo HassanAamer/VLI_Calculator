@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "vli_addition.h"
-#include "vli_reader.h"
+#include "vli_parser.h"
+
+void printVLI(vli_t *VLI);
+void freeVLI(vli_t *VLI);
 
 int main(int argc, char *argv[])
 {
@@ -26,32 +29,32 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    printf("VLI1: ");
-    if (VLI1->isNegative)
-    {
-        printf("-");
-    }
-    printf("%s\n", VLI1->VLI_value);
-    printf("VLI2: ");
-    if (VLI2->isNegative)
-    {
-        printf("-");
-    }
-    printf("%s\n", VLI2->VLI_value);
-
     vli_t *sum = addSignedVLIs(VLI1, VLI2);
+
+    printf("VLI1: ");
+    printVLI(VLI1);
+    printf("VLI2: ");
+    printVLI(VLI2);
     printf("Sum: ");
-    if (sum->isNegative)
+    printVLI(sum);
+
+    freeVLI(VLI1);
+    freeVLI(VLI2);
+    freeVLI(sum);
+    return 0;
+}
+
+void printVLI(vli_t *VLI)
+{
+    if (VLI->isNegative)
     {
         printf("-");
     }
-    printf("%s\n", sum->VLI_value);
+    printf("%s\n", VLI->VLI_value);
+}
 
-    free(VLI1->VLI_value);
-    free(VLI1);
-    free(VLI2->VLI_value);
-    free(VLI2);
-    free(sum->VLI_value);
-    free(sum);
-    return 0;
+void freeVLI(vli_t *VLI)
+{
+    free(VLI->VLI_value);
+    free(VLI);
 }
