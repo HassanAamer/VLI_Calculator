@@ -2,9 +2,9 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <time.h>
 #include "vli_parser.h"
 
-#define ASCII_OFFSET 48
 #define NO_CARRY 0
 #define BASE_10 10
 #define CARRY 1
@@ -20,6 +20,11 @@ int isGreaterThan(vli_t *VLI1, vli_t *VLI2);
  */
 vli_t *addSignedVLIs(vli_t *VLI1, vli_t *VLI2)
 {
+    clock_t start, end;
+    double cpu_time_used;
+
+    start = clock();
+
     vli_t *bigger_VLI = NULL;
     vli_t *smaller_VLI = NULL;
 
@@ -35,7 +40,7 @@ vli_t *addSignedVLIs(vli_t *VLI1, vli_t *VLI2)
     }
 
     vli_t *sum = (vli_t *)malloc(sizeof(vli_t));
-    sum->VLI_value = (char *)malloc(sizeof(char) * (strlen(bigger_VLI->VLI_value) + 2));
+    sum->VLI_value = (char *)malloc(sizeof(char) * (bigger_VLI->length + 2));
 
     if (bigger_VLI->isNegative != smaller_VLI->isNegative)
     {
@@ -52,13 +57,16 @@ vli_t *addSignedVLIs(vli_t *VLI1, vli_t *VLI2)
         sum->isNegative = bigger_VLI->isNegative;
     }
 
+    end = clock();
+    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("CPU TIME USED: %lf\n", cpu_time_used);
     return normalizeVLI(sum);
 }
 
 vli_t *subtractVLIs(vli_t *minuend, vli_t *subtractend, vli_t *output)
 {
-    size_t minuend_length = strlen(minuend->VLI_value);
-    size_t subtractend_length = strlen(subtractend->VLI_value);
+    size_t minuend_length = minuend->length;
+    size_t subtractend_length = subtractend->length;
 
     char *minuend_value = strrev(minuend->VLI_value);
     char *subtractend_value = strrev(subtractend->VLI_value);
@@ -100,16 +108,17 @@ vli_t *subtractVLIs(vli_t *minuend, vli_t *subtractend, vli_t *output)
     // Null-terminate string
     output->VLI_value[i] = '\0';
     output->VLI_value = strrev(output->VLI_value);
+    output->length = i;
 
     return output;
 }
 
 vli_t *addUnsignedVLIs(vli_t *biggerVLI, vli_t *smallerVLI, vli_t *sum)
 {
-    size_t bigger_length = strlen(biggerVLI->VLI_value);
+    size_t bigger_length = biggerVLI->length;
     char *bigger_value = strrev(biggerVLI->VLI_value);
 
-    size_t smaller_length = strlen(smallerVLI->VLI_value);
+    size_t smaller_length = smallerVLI->length;
     char *smaller_value = strrev(smallerVLI->VLI_value);
 
     int carry_flag = NO_CARRY;
@@ -149,6 +158,7 @@ vli_t *addUnsignedVLIs(vli_t *biggerVLI, vli_t *smallerVLI, vli_t *sum)
     }
     sum->VLI_value[i] = '\0';
     sum->VLI_value = strrev(sum->VLI_value);
+    sum->length = i;
 
     return sum;
 }
@@ -159,8 +169,8 @@ int isGreaterThan(vli_t *VLI1, vli_t *VLI2)
         This function takes as input two VLI's and returns 1 if VLI1 is greater
         than VLI2, 0 otherwise.
      */
-    size_t VLI1_length = strlen(VLI1->VLI_value);
-    size_t VLI2_length = strlen(VLI2->VLI_value);
+    size_t VLI1_length = VLI1->length;
+    size_t VLI2_length = VLI2->length;
 
     if (VLI1_length > VLI2_length)
     {

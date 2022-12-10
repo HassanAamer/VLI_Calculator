@@ -8,6 +8,7 @@ typedef struct VLI
 {
     int isNegative;
     char *VLI_value;
+    int length;
 } vli_t;
 
 vli_t *normalizeVLI(vli_t *VLI);

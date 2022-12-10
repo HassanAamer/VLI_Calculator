@@ -2,7 +2,7 @@ IDIR=../include
 CC=gcc
 CFLAGS=-I$(IDIR) -Wall
 
-OUTDIR=..
+EXECDIR=../bin
 
 ODIR=obj
 LDIR=../lib
@@ -19,5 +19,6 @@ $(ODIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(ODIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(OUTDIR)/VLIcalculator: $(OBJ)
+$(EXECDIR)/VLIcalculator: $(OBJ)
+	@mkdir -p $(EXECDIR)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
